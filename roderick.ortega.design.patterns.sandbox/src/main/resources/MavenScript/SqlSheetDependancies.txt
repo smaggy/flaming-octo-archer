@@ -1,0 +1,6 @@
+
+REM meant to be a batch file.  change the extension and make sure sqlsheet is installed
+REM cd "C:\software\SqlSheet\"
+cd "C:\software\SqlSheet\"
+mvn install:install-file -Dfile=sqlsheet-6.3.jar -DgroupId=sqlsheet -DartifactId=sqlsheet -Dversion=6.3 -Dpackaging=jar
+mvn install:install-file -Dfile=jsqlparser-0.8.0.jar -DgroupId=sqlparser -DartifactId=sqlparser -Dversion=0.8.0 -Dpackaging=jar

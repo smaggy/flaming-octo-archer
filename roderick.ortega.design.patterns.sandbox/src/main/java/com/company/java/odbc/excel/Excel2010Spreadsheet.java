@@ -3,6 +3,14 @@ package com.company.java.odbc.excel;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.ResultSet;
+import java.sql.ResultSetMetaData;
+import java.sql.SQLException;
+import java.sql.Statement;
+import java.util.ArrayList;
+import java.util.List;
 
 import org.apache.poi.openxml4j.exceptions.InvalidFormatException;
 import org.apache.poi.ss.usermodel.Row;
@@ -48,6 +56,93 @@ public class Excel2010Spreadsheet {
 		// System.out.println("toString: " + row.toString());
 		System.out.println("cellIterator: " + row.cellIterator());
 		
+	}
+	
+	public void readViaSqlSheet() throws ClassNotFoundException, SQLException {
+		
+		Class.forName("com.googlecode.sqlsheet.Driver");
+
+		Connection writeConnection = DriverManager.getConnection("jdbc:xls:file:./Resources/Excel2010/TestSampleData.xlsx");
+
+		Statement writeStatement = writeConnection.createStatement();
+
+		ResultSet rs = writeStatement.executeQuery("SELECT * FROM MasterTestScript");
+		
+	    List<List<String>> table = new ArrayList<List<String>>();
+	    
+	    ResultSetMetaData rsmd = rs.getMetaData();
+	    System.out.println("The Number of Columns From Result Set: " + rsmd.getColumnCount());
+	    // System.out.println("Result Set was null? " + rs.wasNull());
+	    System.out.println("ColumnName for position 0: " + rsmd.getColumnName(1));
+	    
+	    List<String> header = new ArrayList<String>();
+	    for (int j = 0; j < rsmd.getColumnCount() ; j++) {
+	    	header.add(rsmd.getColumnName(j+1));
+	    }
+	    table.add(header);
+	    
+	    int counter = 0;
+	    while (rs.next()) {
+	    	List<String> row = new ArrayList<String>();
+	    	for (int i = 0; i < rsmd.getColumnCount(); i++) {
+	    		row.add(rs.getString(i+1));
+	    	}
+	    	table.add(row);
+	    	counter = counter + 1;
+	    }
+	    
+	    System.out.println("Number of rows: " + counter);
+	    System.out.println("Number of rows from table size: " + table.size());
+	    System.out.println(table);
+
+	    rs.close();
+		writeStatement.close();
+		writeConnection.close();
+	}
+	
+	public void readViaSqlSheetWithWhere() throws ClassNotFoundException, SQLException {
+		
+		Class.forName("com.googlecode.sqlsheet.Driver");
+
+		Connection writeConnection = DriverManager.getConnection("jdbc:xls:file:./Resources/Excel2010/TestSampleData.xlsx");
+
+		Statement writeStatement = writeConnection.createStatement();
+		
+		/**
+		 * The following statement does not seem to work.  Execute the test and you will find that it always returns the full table.
+		 */
+		ResultSet rs = writeStatement.executeQuery("SELECT * FROM MasterTestScript WHERE DATAKEY='SampleData03'");
+		
+	    List<List<String>> table = new ArrayList<List<String>>();
+	    
+	    ResultSetMetaData rsmd = rs.getMetaData();
+	    System.out.println("The Number of Columns From Result Set: " + rsmd.getColumnCount());
+	    // System.out.println("Result Set was null? " + rs.wasNull());
+	    System.out.println("ColumnName for position 0: " + rsmd.getColumnName(1));
+	    
+	    List<String> header = new ArrayList<String>();
+	    for (int j = 0; j < rsmd.getColumnCount() ; j++) {
+	    	header.add(rsmd.getColumnName(j+1));
+	    }
+	    table.add(header);
+	    
+	    int counter = 0;
+	    while (rs.next()) {
+	    	List<String> row = new ArrayList<String>();
+	    	for (int i = 0; i < rsmd.getColumnCount(); i++) {
+	    		row.add(rs.getString(i+1));
+	    	}
+	    	table.add(row);
+	    	counter = counter + 1;
+	    }
+	    
+	    System.out.println("Number of rows: " + counter);
+	    System.out.println("Number of rows from table size: " + table.size());
+	    System.out.println(table);
+
+	    rs.close();
+		writeStatement.close();
+		writeConnection.close();
 	}
 	
 }

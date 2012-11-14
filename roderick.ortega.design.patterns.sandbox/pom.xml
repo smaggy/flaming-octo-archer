@@ -10,7 +10,7 @@
   
   <properties>
   </properties>
-  
+    
   <dependencies>
 	<dependency>
 		<groupId>junit</groupId>
@@ -27,6 +27,16 @@
 		<groupId>org.apache.poi</groupId>
 		<artifactId>poi-ooxml</artifactId>
 		<version>3.8</version>
+	</dependency>
+	<dependency>
+		<groupId>sqlsheet</groupId>
+		<artifactId>sqlsheet</artifactId>
+		<version>6.3</version>
+	</dependency>
+	<dependency>
+		<groupId>sqlparser</groupId>
+		<artifactId>sqlparser</artifactId>
+		<version>0.8.0</version>
 	</dependency>
   </dependencies>
   <build>
